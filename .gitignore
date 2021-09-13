@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+kafka_2.13-2.8.0.tgz
+kafka_2.13-2.8.0

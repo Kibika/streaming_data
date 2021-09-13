@@ -9,24 +9,15 @@ import wavio
 
 app = Flask(__name__)
 
-TOPIC_NAME = 'audio'
-if type(TOPIC_NAME) == bytes:
-    TOPIC_NAME = TOPIC_NAME.decode('utf-8')
-else:
-    TOPIC_NAME = TOPIC_NAME
+TOPIC_NAME = "AUDIO"
+KAFKA_SERVER = "localhost:9092"
 
-# KAFKA_SERVER = ['kafka:29092','kafka:29092','kafka:39092']
+producer = KafkaProducer(
+    bootstrap_servers = KAFKA_SERVER,
+    api_version = (0, 11, 15)
+)
 
-# # producer = KafkaProducer(
-# #     bootstrap_servers = KAFKA_SERVER,
-# #     api_version = (0, 11, 15)
-# # )
-# producer = KafkaProducer(
-#     bootstrap_servers = KAFKA_SERVER, api_version=(0,11,5)
-# )
-KafkaProducer(bootstrap_servers=["b-1.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092",
-    "b-2.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092"],api_version = (0,10,1))
-    
+
 def audio_byte(audio):
     wave = wavio.read(audio)
     rate = wave.rate
@@ -47,6 +38,7 @@ def kafkaProducer():
         print(type(f))
         # print(f)
         producer.send("audio",f)
+        producer.flush()
         print('sent to producer')
             
         return 'Done'
